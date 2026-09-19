@@ -6,9 +6,22 @@ services:
       POSTGRES_DB: shiptrack
       POSTGRES_USER: shiptrack
       POSTGRES_PASSWORD: shiptrack
-    ports:
-      - "5432:5432"
-    volumes:
-      - shiptrack-data:/var/lib/postgresql/data
+    ports: ["5432:5432"]
+    volumes: [shiptrack-data:/var/lib/postgresql/data]
+  backend:
+    build: ./backend
+    container_name: shiptrack-backend
+    depends_on: [postgres]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shiptrack
+      SPRING_DATASOURCE_USERNAME: shiptrack
+      SPRING_DATASOURCE_PASSWORD: shiptrack
+      APP_JWT_SECRET: ShipTrackProJwtSecretKeyForDevelopmentOnlyChangeInProduction123456789
+    ports: ["8080:8080"]
+  frontend:
+    build: ./frontend
+    container_name: shiptrack-frontend
+    depends_on: [backend]
+    ports: ["5173:80"]
 volumes:
   shiptrack-data:
