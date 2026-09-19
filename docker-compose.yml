@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: shiptrack-postgres
+    environment:
+      POSTGRES_DB: shiptrack
+      POSTGRES_USER: shiptrack
+      POSTGRES_PASSWORD: shiptrack
+    ports:
+      - "5432:5432"
+    volumes:
+      - shiptrack-data:/var/lib/postgresql/data
+volumes:
+  shiptrack-data:
